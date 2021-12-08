@@ -1,8 +1,11 @@
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tech/screens/login_screen/login_screen.dart';
 import 'package:tech/screens/register_screen/cubit/register_cubit.dart';
 import 'package:tech/screens/register_screen/cubit/register_states.dart';
 import 'package:tech/shared/components/components.dart';
+import 'package:tech/shared/styles/icon_broken.dart';
 
 class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
@@ -17,8 +20,9 @@ class RegisterScreen extends StatelessWidget {
       create: (context) => RegsiterCubit(),
       child: BlocConsumer<RegsiterCubit, RegisterStates>(
         listener: (context, state) {
-          if (state is RegisterSuccessState) {
-            toast(text: 'SignUp Sucess', state: FlutterToastState.success);
+          if (state is CreateUserSuccessState) {
+            toast(text: 'SignUp Successfully', state: FlutterToastState.success);
+            navegatToAndFinsh(context, LoginScreen());
           } else if (state is RegisterErrorState) {
             toast(text: state.error, state: FlutterToastState.error);
           }
@@ -78,7 +82,7 @@ class RegisterScreen extends StatelessWidget {
                                     controller: name,
                                     label: 'Name',
                                     type: TextInputType.name,
-                                    prefix: Icons.person,
+                                    prefix: IconBroken.Profile,
                                     validate: (String val) {
                                       if (val.isEmpty) {
                                         return 'Name can\'t  be Empty';
@@ -88,11 +92,15 @@ class RegisterScreen extends StatelessWidget {
                                     controller: email,
                                     label: 'Email',
                                     type: TextInputType.emailAddress,
-                                    prefix: Icons.email,
+                                    prefix: IconBroken.Message,
                                     validate: (String val) {
-                                      if (val.isEmpty) {
-                                        return 'Email can\'t  be Empty';
-                                      }
+                                      Pattern pattern =
+                                          r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                          r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                          r"{0,253}[a-zA-Z0-9])?)*$";
+                                      RegExp reg = new RegExp(pattern);
+                                      if (!reg.hasMatch(val) || val == null)
+                                        return 'Enter a valid email address';
                                     }),
                                 myFormField(
                                     controller: pass,
@@ -101,7 +109,7 @@ class RegisterScreen extends StatelessWidget {
                                       print(val.toString());
                                     },
                                     type: TextInputType.visiblePassword,
-                                    prefix: Icons.password,
+                                    prefix: IconBroken.Password,
                                     isPassword: c.isPassword,
                                     suffix: c.suffix,
                                     suffixOnPressed: () {
@@ -115,8 +123,9 @@ class RegisterScreen extends StatelessWidget {
                                 myFormField(
                                     controller: phone,
                                     label: 'Phone',
+                                    maxleanth: 11,
                                     type: TextInputType.phone,
-                                    prefix: Icons.phone,
+                                    prefix: IconBroken.Call,
                                     validate: (String val) {
                                       if (val.length < 11) {
                                         return 'phone can\'t be less than 11';
@@ -125,20 +134,29 @@ class RegisterScreen extends StatelessWidget {
                                 const SizedBox(
                                   height: 5,
                                 ),
-                                defaultButton(
-                                    text: 'SignUp',
-                                    function: () {
-                                      if (formKey.currentState.validate()) {
-                                        c.userInfo(name.text, email.text,
-                                            pass.text, phone.text);
-                                        if (state is RegisterSuccessState) {
-                                          name.text = '';
-                                          email.text = '';
-                                          pass.text = '';
-                                          phone.text = '';
+                                ConditionalBuilder(
+                                  condition: state is! RegisterLoadingState,
+                                  builder: (context) => defaultButton(
+                                      text: 'SignUp',
+                                      function: () {
+                                        if (formKey.currentState.validate()) {
+                                          c.userInfo(
+                                            name: name.text,
+                                            email: email.text,
+                                            pass: pass.text,
+                                            phone: phone.text,
+                                          );
+                                          if (state is RegisterSuccessState) {
+                                            name.text = '';
+                                            email.text = '';
+                                            pass.text = '';
+                                            phone.text = '';
+                                          }
                                         }
-                                      }
-                                    }),
+                                      }),
+                                  fallback: (context) => const Center(
+                                      child: CircularProgressIndicator()),
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

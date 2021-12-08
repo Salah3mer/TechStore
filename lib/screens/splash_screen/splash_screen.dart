@@ -14,8 +14,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void initState(){
     super.initState();
-    Timer(const Duration(seconds: 3),(){
-    navegatToAndFinsh(context, Login_Screen());
+    Timer(const Duration(seconds: 3,),(){
+    navegatToAndFinsh(context, LoginScreen());
     });
   }
   @override

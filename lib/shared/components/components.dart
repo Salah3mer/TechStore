@@ -26,6 +26,7 @@ Widget myFormField(
         IconData prefix,
         IconData suffix,
         TextStyle style,
+        int maxleanth,
         bool readonly = false,
         bool isPassword = false, }) =>
     Padding(
@@ -40,7 +41,9 @@ Widget myFormField(
         onFieldSubmitted: onSubmit,
         onChanged: onChange,
         style: style,
+        maxLength: maxleanth,
         decoration: InputDecoration(
+
           hintStyle: const TextStyle(fontWeight: FontWeight.normal),
           fillColor: Colors.white,
           filled: true,
