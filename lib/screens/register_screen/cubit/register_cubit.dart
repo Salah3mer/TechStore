@@ -7,9 +7,7 @@ import 'package:tech/screens/register_screen/cubit/register_states.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
 
 class RegsiterCubit extends Cubit<RegisterStates> {
-
   RegsiterCubit() :super(RegisterInitState());
-
   static RegsiterCubit get(context) => BlocProvider.of(context);
 
   bool isPassword = true;
@@ -31,7 +29,7 @@ class RegsiterCubit extends Cubit<RegisterStates> {
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email, password: pass).
     then((value) {
-      createUser(uId:value.user.uid, name: name, email: email, phone: phone);
+      createUser(uId:value.user.uid, name: name, email: email, phone: phone,pass: pass);
     }).catchError((error) {
       emit(RegisterErrorState(error.toString()));
       print(error.toString());
@@ -43,12 +41,14 @@ class RegsiterCubit extends Cubit<RegisterStates> {
     @required name,
     @required email,
     @required phone,
+    @required pass,
   }) {
     UserModel model = UserModel(
       email: email,
       name: name,
       phone: phone,
       uId: uId,
+      pass: pass
     );
 
     FirebaseFirestore.instance.collection('users').doc(uId)

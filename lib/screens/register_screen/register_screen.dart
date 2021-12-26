@@ -1,6 +1,7 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tech/screens/login_screen/cubit/login_cubit.dart';
 import 'package:tech/screens/login_screen/login_screen.dart';
 import 'package:tech/screens/register_screen/cubit/register_cubit.dart';
 import 'package:tech/screens/register_screen/cubit/register_states.dart';
@@ -9,15 +10,15 @@ import 'package:tech/shared/styles/icon_broken.dart';
 
 class RegisterScreen extends StatelessWidget {
   var formKey = GlobalKey<FormState>();
-  var name = TextEditingController();
-  var email = TextEditingController();
-  var pass = TextEditingController();
-  var phone = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  TextEditingController phone = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => RegsiterCubit(),
+      create:(context)=> RegsiterCubit(),
       child: BlocConsumer<RegsiterCubit, RegisterStates>(
         listener: (context, state) {
           if (state is CreateUserSuccessState) {
@@ -105,9 +106,6 @@ class RegisterScreen extends StatelessWidget {
                                 myFormField(
                                     controller: pass,
                                     label: 'Password',
-                                    onChange: (val) {
-                                      print(val.toString());
-                                    },
                                     type: TextInputType.visiblePassword,
                                     prefix: IconBroken.Password,
                                     isPassword: c.isPassword,
@@ -130,7 +128,19 @@ class RegisterScreen extends StatelessWidget {
                                       if (val.length < 11) {
                                         return 'phone can\'t be less than 11';
                                       }
-                                    }),
+                                    },
+                                    onSubmit: (String val){
+                                      if (formKey.currentState.validate()) {
+                                        c.userInfo(
+                                          name: name.text,
+                                          email: email.text,
+                                          pass: pass.text,
+                                          phone: phone.text,
+                                        );
+                                      }
+                                    }
+                                    ),
+
                                 const SizedBox(
                                   height: 5,
                                 ),
@@ -146,12 +156,7 @@ class RegisterScreen extends StatelessWidget {
                                             pass: pass.text,
                                             phone: phone.text,
                                           );
-                                          if (state is RegisterSuccessState) {
-                                            name.text = '';
-                                            email.text = '';
-                                            pass.text = '';
-                                            phone.text = '';
-                                          }
+
                                         }
                                       }),
                                   fallback: (context) => const Center(
@@ -162,7 +167,9 @@ class RegisterScreen extends StatelessWidget {
                                   children: [
                                     const Text('Already Have An Account ?'),
                                     TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          navegatToAndFinsh(context, LoginScreen());
+                                        },
                                         child: const Text('Login Now',
                                             style:
                                                 TextStyle(color: Colors.blue)))

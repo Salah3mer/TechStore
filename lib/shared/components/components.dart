@@ -45,7 +45,7 @@ Widget myFormField(
         decoration: InputDecoration(
 
           hintStyle: const TextStyle(fontWeight: FontWeight.normal),
-          fillColor: Colors.white,
+          fillColor: Colors.grey[100],
           filled: true,
           labelText: label,
           hintText: hint,
@@ -60,9 +60,7 @@ Widget myFormField(
               : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide(
-              color: HexColor('#4ee4fb'),
-            ),
+            borderSide: BorderSide.none,
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
