@@ -52,21 +52,20 @@ class LoginScreen extends StatelessWidget {
                       left: 20.0,
                       bottom: 50,
                     ),
-                    child: Form(
-                      key: formkey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: const [
-                          Text(
-                            'Welcome ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                              fontSize: 35,
-                            ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: const [
+                        Text(
+                          'Welcome ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                            fontSize: 35,
                           ),
-                          Text(
+                        ),
+                        SingleChildScrollView(
+                          child: Text(
                             'Back! ',
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
@@ -74,8 +73,8 @@ class LoginScreen extends StatelessWidget {
                               fontSize: 35,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -95,118 +94,121 @@ class LoginScreen extends StatelessWidget {
 
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0,vertical: 20,),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children:[
-                            const SizedBox(height: 10,),
-                            const Padding(
-                              padding:  EdgeInsets.all(15.0),
-                              child: Text('Login  ',style: TextStyle(
-                                fontSize: 30,
-                                  fontWeight: FontWeight.bold
-                              ),),
-                            ),
-                            const SizedBox(height: 30,),
+                        child: Form(
+                          key: formkey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:[
+                              const SizedBox(height: 5,),
+                              const Padding(
+                                padding:  EdgeInsets.all(15.0),
+                                child: Text('Login  ',style: TextStyle(
+                                  fontSize: 30,
+                                    fontWeight: FontWeight.bold
+                                ),),
+                              ),
+                              const SizedBox(height: 30,),
 
-                            const Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: Text('UserName',style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold
-                              ),),
-                            ),
-                            const SizedBox(height: 10),
-
-                            myFormField(
-                                controller: email,
-                                hint: 'Enter Your Email',
-                                type: TextInputType.emailAddress,
-                                prefix: IconBroken.Message,
-                                validate: (String val) {
-                                  Pattern pattern =
-                                      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                                      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-                                      r"{0,253}[a-zA-Z0-9])?)*$";
-                                  RegExp reg = new RegExp(pattern);
-                                  if (!reg.hasMatch(val) || val == null)
-                                    return 'Enter a valid email address';
-                                }),
-                            const  SizedBox(height: 30,),
-                            const Padding(
-                              padding:  EdgeInsets.only(left: 20),
-                              child: Text('Password',style: TextStyle(
+                              const Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Text('UserName',style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold
-                              ),),
-                            ),
-                            const  SizedBox(height: 10),
-                            myFormField(
-                                controller: pass,
-                                hint: 'Enter Your Password',
-                                type: TextInputType.visiblePassword,
-                                prefix: IconBroken.Password,
-                                isPassword: c.isPassword,
-                                suffix: c.suffix,
-                                suffixOnPressed: () {
-                                  c.changeLoginEye();
-                                },
-                                validate: (String val) {
-                                  if (val.length < 6) {
-                                    return 'can\'t be less than 6';
-                                  }
-                                }),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    child: const Text('Forget Password?',style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.blue,
-                              ),),
-                                    onPressed: (){},
-                                  ),
-
-                                ],
+                                ),),
                               ),
-                            ),
-                            ConditionalBuilder(
-                              condition: state is ! LoginLoadingState,
-                              builder:(context)=> defaultButton(text:'Login',function: (){
-                              if(formkey.currentState.validate()){
-                                c.userLogin(email: email.text,pass: pass.text);
-                              }
-                              }),
-                              fallback: (context) =>const Center(child: CircularProgressIndicator()),
-                            ),
-                       const  SizedBox(height: 10,),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 60,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.grey[200],
-                             ),
-                            child: MaterialButton(
-                              onPressed:(){
-                                navegatTo(context,RegisterScreen());
-                              },
-                              child: const Text(
-                                'Create Account',
-                                style:  TextStyle(
+                              const SizedBox(height: 10),
+
+                              myFormField(
+                                  controller: email,
+                                  hint: 'Enter Your Email',
+                                  type: TextInputType.emailAddress,
+                                  prefix: IconBroken.Message,
+                                  validate: (String val) {
+                                    Pattern pattern =
+                                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+                                        r"{0,253}[a-zA-Z0-9])?)*$";
+                                    RegExp reg = new RegExp(pattern);
+                                    if (!reg.hasMatch(val) || val == null)
+                                      return 'Enter a valid email address';
+                                  }),
+                              const  SizedBox(height: 30,),
+                              const Padding(
+                                padding:  EdgeInsets.only(left: 20),
+                                child: Text('Password',style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                ),),
+                              ),
+                              const  SizedBox(height: 10),
+                              myFormField(
+                                  controller: pass,
+                                  hint: 'Enter Your Password',
+                                  type: TextInputType.visiblePassword,
+                                  prefix: IconBroken.Password,
+                                  isPassword: c.isPassword,
+                                  suffix: c.suffix,
+                                  suffixOnPressed: () {
+                                    c.changeLoginEye();
+                                  },
+                                  validate: (String val) {
+                                    if (val.length < 6) {
+                                      return 'can\'t be less than 6';
+                                    }
+                                  }),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    TextButton(
+                                      child: const Text('Forget Password?',style: TextStyle(
+                                  fontSize: 16,
                                   color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                                ),),
+                                      onPressed: (){},
+                                    ),
+
+                                  ],
                                 ),
                               ),
-                              minWidth: double.infinity,
+                              ConditionalBuilder(
+                                condition: state is ! LoginLoadingState,
+                                builder:(context)=> defaultButton(text:'Login',function: (){
+                                if(formkey.currentState.validate()){
+                                  c.userLogin(email: email.text,pass: pass.text);
+                                }
+                                }),
+                                fallback: (context) =>const Center(child: CircularProgressIndicator()),
+                              ),
+                       const  SizedBox(height: 10,),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Container(
+                              width: double.infinity,
+                              height: 60,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.grey[200],
+                               ),
+                              child: MaterialButton(
+                                onPressed:(){
+                                  navegatTo(context,RegisterScreen());
+                                },
+                                child: const Text(
+                                  'Create Account',
+                                  style:  TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                minWidth: double.infinity,
+                              ),
                             ),
                           ),
-                        ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

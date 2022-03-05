@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+import '../cash_helper.dart';
+
 void navegatTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 
@@ -27,6 +29,7 @@ Widget myFormField(
         IconData suffix,
         TextStyle style,
         int maxleanth,
+        Color myColor,
         bool readonly = false,
         bool isPassword = false, }) =>
     Padding(
@@ -45,7 +48,7 @@ Widget myFormField(
         decoration: InputDecoration(
 
           hintStyle: const TextStyle(fontWeight: FontWeight.normal),
-          fillColor: Colors.grey[100],
+          fillColor: myColor!=null?myColor:Colors.grey[100] ,
           filled: true,
           labelText: label,
           hintText: hint,
@@ -137,3 +140,11 @@ Color choseColor(  FlutterToastState state) {
   }
   return color;
 }
+
+Widget LogOut(context,widget)=>TextButton(
+onPressed: () {
+CashHelper.removeData(key: 'uId');
+navegatToAndFinsh(context, widget);
+},
+child: Text('logOut'),
+);

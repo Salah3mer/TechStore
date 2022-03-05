@@ -8,6 +8,8 @@ import 'package:tech/screens/splash_screen/splash_screen.dart';
 import 'package:tech/shared/bloc_observer/bloc_observer.dart';
 import 'package:tech/shared/cash_helper.dart';
 import 'package:tech/shared/components/const.dart';
+import 'package:tech/shared/cubit/app_cubit.dart';
+import 'package:tech/shared/cubit/app_states.dart';
 
 import 'layout/home_layout.dart';
 
@@ -26,32 +28,28 @@ void main() async {
         statusBarIconBrightness: Brightness.dark,
       ));
   uId = CashHelper.getData(key: 'uId');
-
-  Widget widget;
-  if(uId==null){
-    widget = LoginScreen();
-  }else{
-    widget =HomeLayout();
-  }
-
-  runApp( MyApp(widget :widget));
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget
 {
-  final widget;
-
-  const MyApp({Key key, this.widget}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
 
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            home: widget,
+          return BlocProvider(
+            create: (context)=>AppCubit(),
+            child:BlocConsumer<AppCubit,AppStates>(
+            listener: (context,state){},
+            builder: (context,state){
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: ThemeData(
+                  primarySwatch: Colors.blue,
+                ),
+                home: SplashScreen(),
+              );
+            },
+            )
           );
         }
 
