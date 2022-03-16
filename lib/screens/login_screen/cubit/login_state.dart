@@ -9,5 +9,4 @@ class LoginErrorState extends LoginStates{
   final String error;
   LoginErrorState(this.error);
 }
-
 class ChangeLoginEyeState extends LoginStates{}

@@ -7,6 +7,8 @@ import 'package:tech/screens/login_screen/cubit/login_cubit.dart';
 import 'package:tech/screens/register_screen/register_screen.dart';
 import 'package:tech/shared/cash_helper.dart';
 import 'package:tech/shared/components/components.dart';
+import 'package:tech/shared/components/const.dart';
+import 'package:tech/shared/cubit/app_cubit.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
 
 import 'cubit/login_state.dart';

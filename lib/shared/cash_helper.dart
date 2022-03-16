@@ -22,9 +22,9 @@ class CashHelper {
   }
 
   static dynamic getData({@required String key}) {
-        return sharedPreferences.get(key);
+        return  sharedPreferences.get(key);
   }
-  static void removeData({@required String key}){
-    sharedPreferences.remove(key);
+  static void removeData({@required String key})async{
+   await sharedPreferences.remove(key);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -7,7 +8,8 @@ import '../cash_helper.dart';
 void navegatTo(context, widget) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 
-void navegatToAndFinsh(context, widget) => Navigator.pushAndRemoveUntil(
+Future navegatToAndFinsh(context, widget) =>
+    Navigator.pushAndRemoveUntil(
         context, MaterialPageRoute(builder: (context) => widget), (route) {
       return false;
     });
@@ -15,23 +17,24 @@ void navegatToAndFinsh(context, widget) => Navigator.pushAndRemoveUntil(
 void navegatBack(context, widget) =>
     Navigator.pop(context, MaterialPageRoute(builder: (context) => widget));
 
-Widget myFormField(
-        {@required TextEditingController controller,
-        String label,
-        String hint,
-        Function validate,
-        Function onTap,
-        Function onChange,
-        Function onSubmit,
-        Function suffixOnPressed,
-        TextInputType type,
-        IconData prefix,
-        IconData suffix,
-        TextStyle style,
-        int maxleanth,
-        Color myColor,
-        bool readonly = false,
-        bool isPassword = false, }) =>
+Widget myFormField({@required TextEditingController controller,
+
+  String label,
+  String hint,
+  Function validate,
+  Function onTap,
+  Function onChange,
+  Function onSubmit,
+  Function suffixOnPressed,
+  TextInputType type,
+  IconData prefix,
+  IconData suffix,
+  TextStyle style,
+  int maxleanth,
+  bool autofocus = false,
+  Color myColor,
+  bool readonly = false,
+  bool isPassword = false,}) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       child: TextFormField(
@@ -44,11 +47,12 @@ Widget myFormField(
         onFieldSubmitted: onSubmit,
         onChanged: onChange,
         style: style,
+        autofocus:autofocus,
         maxLength: maxleanth,
         decoration: InputDecoration(
 
           hintStyle: const TextStyle(fontWeight: FontWeight.normal),
-          fillColor: myColor!=null?myColor:Colors.grey[100] ,
+          fillColor: myColor != null ? myColor : Colors.grey[100],
           filled: true,
           labelText: label,
           hintText: hint,
@@ -76,7 +80,8 @@ Widget myFormField(
       ),
     );
 
-Widget defaultButton({String text,Function function}) => Padding(
+Widget defaultButton({String text, Function function}) =>
+    Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Container(
         width: double.infinity,
@@ -98,7 +103,7 @@ Widget defaultButton({String text,Function function}) => Padding(
               ]),
         ),
         child: MaterialButton(
-          onPressed:function,
+          onPressed: function,
           child: Text(
             text,
             style: const TextStyle(
@@ -111,6 +116,7 @@ Widget defaultButton({String text,Function function}) => Padding(
         ),
       ),
     );
+
 void toast({
   @required String text,
   @required FlutterToastState state,
@@ -125,26 +131,19 @@ void toast({
         fontSize: 16.0);
 enum FlutterToastState { success, warning, error }
 
-Color choseColor(  FlutterToastState state) {
+Color choseColor(FlutterToastState state) {
   Color color;
   switch (state) {
     case FlutterToastState.success:
       color = Colors.green;
       break;
     case FlutterToastState.warning:
-      color =Colors.amber;
+      color = Colors.amber;
       break;
     case FlutterToastState.error:
-      color=Colors.red;
+      color = Colors.red;
       break;
   }
   return color;
 }
 
-Widget LogOut(context,widget)=>TextButton(
-onPressed: () {
-CashHelper.removeData(key: 'uId');
-navegatToAndFinsh(context, widget);
-},
-child: Text('logOut'),
-);
