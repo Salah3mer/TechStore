@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/models/category_model.dart';
+import 'package:tech/models/product_model.dart';
+import 'package:tech/screens/single_category_screen/single_category_screen.dart';
+import 'package:tech/shared/components/components.dart';
 import 'package:tech/shared/cubit/app_cubit.dart';
 import 'package:tech/shared/cubit/app_states.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
@@ -72,9 +75,17 @@ class CategoryScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.separated(
+                      physics: BouncingScrollPhysics(),
                       itemBuilder: (context, index) =>
                           InkWell(
                               onTap: (){
+                                navegatTo(context, SingleCategoryScreen());
+                                c.catproduct=[];
+                                for(int i=0;i<=c.product.length;i++){
+                                  if(c.category[index].id ==c.product[i].catId){
+                                    c.catproduct.add(c.product[i]);
+                                }
+                                }
                               },
                               highlightColor: Colors.lightBlue,
                               child: buildCategoryItem(c.category[index])),

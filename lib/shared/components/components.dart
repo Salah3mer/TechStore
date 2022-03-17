@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tech/shared/styles/icon_broken.dart';
 
 import '../cash_helper.dart';
 
@@ -146,4 +147,53 @@ Color choseColor(FlutterToastState state) {
   }
   return color;
 }
+
+Widget homeGrid(  model) => Container(
+  decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(15),
+    color: Colors.white,
+  ),
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(5),
+          child: Image(
+            image: NetworkImage(model.urlImage),
+            width: double.infinity,
+            height: 170,
+          ),
+        ),
+        Text(
+          model.name,
+          style: const TextStyle(overflow: TextOverflow.ellipsis),
+          maxLines: 2,
+        ),
+        Row(
+          children: [
+            Text(
+              '${model.price.round()}',
+              style: const TextStyle(
+                  fontSize: 12,
+                  color: Colors.lightBlue,
+                  overflow: TextOverflow.ellipsis),
+              maxLines: 1,
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            Spacer(),
+            IconButton(
+                onPressed: () {},
+                icon: Icon(
+                    IconBroken.Heart
+                ))
+          ],
+        ),
+      ],
+    ),
+  ),
+);
 

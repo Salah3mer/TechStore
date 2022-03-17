@@ -5,13 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/models/banner_model.dart';
 import 'package:tech/models/category_model.dart';
+import 'package:tech/models/product_model.dart';
 import 'package:tech/models/user_model.dart';
 import 'package:tech/screens/category_screen/category_screen.dart';
 import 'package:tech/screens/favorite_screen/favorite_screen.dart';
 import 'package:tech/screens/home_screen/home_screen.dart';
-import 'package:tech/screens/setting_screen/setting_screen.dart';
-import 'package:tech/shared/cash_helper.dart';
-import 'package:tech/shared/components/const.dart';
+import 'package:tech/screens/settings_screen/setting_screen.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
 import 'app_states.dart';
 
@@ -75,6 +74,22 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  List<ProductModel> product=[];
+  void getproduct( {
+    String token,
+  }) {
+    emit(GetCategoryLoadingState());
+    FirebaseFirestore.instance.collection('product').get().then((value) {
+      value.docs.forEach((element) {
+        product.add(ProductModel.fromJson(element.data()));
+      });
+      emit(GetProductSuccessState());
+    }).catchError((error){
+      emit(GetProductErrorState());
+      print(error.toString());
+    });
+  }
+
   List<BannerModel> banner=[];
   void getBanner({
     String token,
@@ -90,4 +105,7 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
     });
   }
+  List <ProductModel> catproduct=[];
+
 }
+

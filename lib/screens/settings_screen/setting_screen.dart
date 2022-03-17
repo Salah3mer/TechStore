@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/screens/login_screen/login_screen.dart';
@@ -24,7 +23,7 @@ class SettingScreen extends StatelessWidget {
                 CashHelper.removeData(key: uId);
               });
         },
-        child: Text('logOut'),
+        child: const Text('logOut'),
         )
         );
       },

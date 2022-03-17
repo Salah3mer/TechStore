@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/models/category_model.dart';
+import 'package:tech/models/product_model.dart';
 import 'package:tech/models/user_model.dart';
 import 'package:tech/screens/search_screen/search_screen.dart';
 import 'package:tech/shared/components/components.dart';
@@ -24,10 +25,7 @@ class HomeScreen extends StatelessWidget {
         },
         builder: (context, state) {
           var c = AppCubit.get(context);
-          Widget category(
-            CategoryModel model,
-          ) =>
-              Container(
+          Widget category(CategoryModel model,) => Container(
                 width: 170,
                 height: 60,
                 decoration: BoxDecoration(
@@ -75,6 +73,7 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               child: SafeArea(
                 child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -189,12 +188,39 @@ class HomeScreen extends StatelessWidget {
                             ),
                             itemCount: c.category.length),
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const Text(
+                        'All Product',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: List.generate(
+                              c.product.length,
+                                  (index) => homeGrid(c.product[index]),
+                            ),
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                            childAspectRatio: 1 / 1.5,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            fallback: (context)=> Center(child: CircularProgressIndicator()),
+            fallback: (context)=> const Center(child: CircularProgressIndicator( color: Colors.lightBlue,)),
           );
         },
       ),

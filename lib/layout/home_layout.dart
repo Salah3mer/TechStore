@@ -13,6 +13,7 @@ class HomeLayout extends StatelessWidget {
           var c = AppCubit.get(context);
           Size size = MediaQuery.of(context).size;
           return Scaffold(
+            backgroundColor: Colors.grey.shade50,
             body: Stack(
               children: [
               c.screens[c.currentIndex],
