@@ -106,6 +106,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
   List <ProductModel> catproduct=[];
+  int catIndex;
 
 }
 

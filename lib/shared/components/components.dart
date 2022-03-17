@@ -150,9 +150,15 @@ Color choseColor(FlutterToastState state) {
 
 Widget homeGrid(  model) => Container(
   decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(15),
-    color: Colors.white,
-  ),
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(30),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(.06),
+          blurRadius: 20,
+          offset: const Offset(0, 5),
+        ),
+      ],),
   child: Padding(
     padding: const EdgeInsets.symmetric(horizontal: 10.0),
     child: Column(

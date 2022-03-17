@@ -9,6 +9,7 @@ import 'package:tech/models/category_model.dart';
 import 'package:tech/models/product_model.dart';
 import 'package:tech/models/user_model.dart';
 import 'package:tech/screens/search_screen/search_screen.dart';
+import 'package:tech/screens/single_category_screen/single_category_screen.dart';
 import 'package:tech/shared/components/components.dart';
 import 'package:tech/shared/components/const.dart';
 import 'package:tech/shared/cubit/app_cubit.dart';
@@ -178,7 +179,16 @@ class HomeScreen extends StatelessWidget {
                         child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) => InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  navegatTo(context, SingleCategoryScreen());
+                                  c.catIndex=index;
+                                  c.catproduct = [];
+                                  for (int i = 0; i <= c.product.length; i++) {
+                                    if (c.category[index].id == c.product[i].catId) {
+                                      c.catproduct.add(c.product[i]);
+                                    }
+                                  }
+                                },
                                 highlightColor: Colors.lightBlue,
                                 child: category(
                                   c.category[index],
