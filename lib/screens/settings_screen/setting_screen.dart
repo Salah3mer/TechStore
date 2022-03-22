@@ -18,6 +18,7 @@ class SettingScreen extends StatelessWidget {
         return  Center(
           child: TextButton(
             onPressed: () {
+              c.currentIndex=0;
               navegatToAndFinsh(context, LoginScreen()).then((value) {
                 c.signOut();
                 CashHelper.removeData(key: uId);

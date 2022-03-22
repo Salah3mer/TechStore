@@ -3,15 +3,12 @@ import 'package:conditional_builder/conditional_builder.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/models/category_model.dart';
-import 'package:tech/models/product_model.dart';
-import 'package:tech/models/user_model.dart';
+import 'package:tech/screens/product_screen/product_screen.dart';
 import 'package:tech/screens/search_screen/search_screen.dart';
 import 'package:tech/screens/single_category_screen/single_category_screen.dart';
 import 'package:tech/shared/components/components.dart';
-import 'package:tech/shared/components/const.dart';
 import 'package:tech/shared/cubit/app_cubit.dart';
 import 'package:tech/shared/cubit/app_states.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
@@ -217,7 +214,12 @@ class HomeScreen extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             children: List.generate(
                               c.product.length,
-                                  (index) => homeGrid(c.product[index]),
+                                  (index) => InkWell(
+                                      onTap: (){
+                                        c.currentProductIndex=index;
+                                        navegatTo(context, ProductScreen());
+                                      },
+                                      child: homeGrid(c.product[index])),
                             ),
                             crossAxisSpacing: 5,
                             mainAxisSpacing: 5,

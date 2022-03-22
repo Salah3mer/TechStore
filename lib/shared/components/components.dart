@@ -87,6 +87,7 @@ Widget defaultButton({String text, Function function}) =>
       child: Container(
         width: double.infinity,
         height: 60,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           gradient: LinearGradient(
@@ -104,6 +105,7 @@ Widget defaultButton({String text, Function function}) =>
               ]),
         ),
         child: MaterialButton(
+
           onPressed: function,
           child: Text(
             text,

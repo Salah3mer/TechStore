@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/screens/category_screen/category_screen.dart';
+import 'package:tech/screens/product_screen/product_screen.dart';
 import 'package:tech/shared/components/components.dart';
 import 'package:tech/shared/cubit/app_cubit.dart';
 import 'package:tech/shared/cubit/app_states.dart';
@@ -47,7 +48,12 @@ class SingleCategoryScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   children: List.generate(
                     c.catproduct.length,
-                        (index) => homeGrid(c.catproduct[index]),
+                        (index) => InkWell(
+                          onTap: (){
+                            c.currentProductIndex=index;
+                            navegatTo(context, ProductScreen());
+                          },
+                            child: homeGrid(c.catproduct[index])),
                   ),
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,

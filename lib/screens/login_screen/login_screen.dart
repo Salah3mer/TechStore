@@ -1,14 +1,11 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tech/layout/home_layout.dart';
 import 'package:tech/screens/login_screen/cubit/login_cubit.dart';
 import 'package:tech/screens/register_screen/register_screen.dart';
 import 'package:tech/shared/cash_helper.dart';
 import 'package:tech/shared/components/components.dart';
-import 'package:tech/shared/components/const.dart';
-import 'package:tech/shared/cubit/app_cubit.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
 
 import 'cubit/login_state.dart';

@@ -1,7 +1,6 @@
 class BannerModel{
 
   String id;
-
   String urlImage;
 
   BannerModel(

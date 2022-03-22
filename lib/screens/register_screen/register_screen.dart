@@ -1,7 +1,6 @@
 import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tech/screens/login_screen/cubit/login_cubit.dart';
 import 'package:tech/screens/login_screen/login_screen.dart';
 import 'package:tech/screens/register_screen/cubit/register_cubit.dart';
 import 'package:tech/screens/register_screen/cubit/register_states.dart';
