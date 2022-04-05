@@ -24,13 +24,14 @@ class RegsiterCubit extends Cubit<RegisterStates> {
     @required email,
     @required pass,
     @required phone,
-    image
+    image,
+    address,
   }) {
     emit(RegisterLoadingState());
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email, password: pass).
     then((value) {
-      createUser(uId:value.user.uid, name: name, email: email, phone: phone,pass: pass,image:image);
+      createUser(uId:value.user.uid, name: name, email: email, phone: phone,pass: pass,image:image,address: address);
     }).catchError((error) {
       emit(RegisterErrorState(error.toString()));
       print(error.toString());
@@ -43,7 +44,8 @@ class RegsiterCubit extends Cubit<RegisterStates> {
     @required email,
     @required phone,
     @required pass,
-    image,
+    String image,
+    String address,
   }) {
     UserModel model = UserModel(
       email: email,
@@ -51,7 +53,8 @@ class RegsiterCubit extends Cubit<RegisterStates> {
       phone: phone,
       uId: uId,
       pass: pass,
-      image: image
+      image: image,
+      address: address,
     );
 
     FirebaseFirestore.instance.collection('users').doc(uId)

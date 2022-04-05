@@ -1,6 +1,7 @@
 abstract class AppStates{}
 class AppInitialState extends AppStates{}
 class GetUserSuccessState extends AppStates{}
+class ChangeEyeState extends AppStates{}
 class UserSingOutSuccessState extends AppStates{}
 class GetUserErrorState extends AppStates{}
 class ChangeBottomNavState extends AppStates{}
@@ -16,3 +17,8 @@ class GetProductErrorState extends AppStates{}
 class GetBannerLoadingState extends AppStates{}
 class GetBannerSuccessState extends AppStates{}
 class GetBannerErrorState extends AppStates{}
+class PickProfileImageSuccessState extends AppStates{}
+class UploadProfileImageSuccessState extends AppStates{}
+class UploadProfileImageErrorState extends AppStates{}
+class UpdateUserErrorState extends AppStates{}
+class UpdateUserSucessState extends AppStates{}

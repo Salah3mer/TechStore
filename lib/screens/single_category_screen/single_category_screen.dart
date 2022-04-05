@@ -42,22 +42,25 @@ class SingleCategoryScreen extends StatelessWidget {
             child: Container(
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  children: List.generate(
-                    c.catproduct.length,
-                        (index) => InkWell(
-                          onTap: (){
-                            c.currentProductIndex=index;
-                            navegatTo(context, ProductScreen());
-                          },
-                            child: homeGrid(c.catproduct[index])),
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: List.generate(
+                      c.catproduct.length,
+                          (index) => InkWell(
+                            onTap: (){
+                              c.currentProductIndex=index;
+                              navegatTo(context, ProductScreen());
+                            },
+                              child: homeGrid(c.catproduct[index])),
+                    ),
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 5,
+                    childAspectRatio: 1 / 1.5,
                   ),
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 5,
-                  childAspectRatio: 1 / 1.5,
                 ),
               ),
             ),

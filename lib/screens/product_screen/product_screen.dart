@@ -31,7 +31,8 @@ class ProductScreen extends StatelessWidget {
                             (context, url, downloadProgress) => Center(
                           child: CircularProgressIndicator(
                             value: downloadProgress.progress,
-                            strokeWidth: 1,
+                            strokeWidth: 2,
+                            color: Colors.lightBlue,
                           ),
                         ),
                         errorWidget: (context, url, error) => Icon(
@@ -80,6 +81,7 @@ class ProductScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [

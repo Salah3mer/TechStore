@@ -31,6 +31,7 @@ Widget myFormField({@required TextEditingController controller,
   IconData prefix,
   IconData suffix,
   TextStyle style,
+  bool nonFocseBorder=false,
   int maxleanth,
   bool autofocus = false,
   Color myColor,
@@ -70,11 +71,13 @@ Widget myFormField({@required TextEditingController controller,
             borderRadius: BorderRadius.circular(20),
             borderSide: BorderSide.none,
           ),
-          focusedBorder: OutlineInputBorder(
+          focusedBorder:!nonFocseBorder ?OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: BorderSide(
               color: HexColor('#008db8'),
             ),
+          ): UnderlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
 
         ),
