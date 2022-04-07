@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:tech/shared/cubit/app_cubit.dart';
 import 'package:tech/shared/styles/icon_broken.dart';
 
 import '../cash_helper.dart';
@@ -153,7 +154,7 @@ Color choseColor(FlutterToastState state) {
   return color;
 }
 
-Widget homeGrid(  model) => Container(
+Widget homeGrid(  model,context,index) => Container(
   decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(30),
@@ -197,10 +198,18 @@ Widget homeGrid(  model) => Container(
             ),
             Spacer(),
             IconButton(
-                onPressed: () {},
-                icon: Icon(
+                onPressed: () {
+               AppCubit.get(context).changeFav(model.id,index)  ;
+                },
+                icon:AppCubit.get(context).fav[index]==false? Icon(
                     IconBroken.Heart
-                ))
+                ):Container(
+                  clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                        color: Colors.red,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Icon(IconBroken.Heart,color: Colors.white,))),
           ],
         ),
       ],

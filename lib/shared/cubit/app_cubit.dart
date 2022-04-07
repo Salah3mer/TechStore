@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tech/models/banner_model.dart';
@@ -29,7 +30,6 @@ class AppCubit extends Cubit<AppStates> {
   Stream getUserData(String uId) {
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       userdata = UserModel.fromJson(value.data());
-      currentIndex = 0;
       emit(GetUserSuccessState());
     }).catchError((err) {
       emit(GetUserErrorState());
@@ -79,14 +79,21 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   List<ProductModel> product = [];
-
-  void getproduct({
+  List<ProductModel>favProduct=[];
+  List <bool>fav=[];
+   getproduct({
     String token,
   }) {
     emit(GetProductLoadingState());
     FirebaseFirestore.instance.collection('product').get().then((value) {
       value.docs.forEach((element) {
-        product.add(ProductModel.fromJson(element.data()));
+        print(element['fav'].toString());
+          product.add(ProductModel.fromJson(element.data()));
+         if (element['fav'].toString().contains(userdata.uId)) {
+           fav.add(true);
+         } else {
+           fav.add(false);
+         }
       });
       emit(GetProductSuccessState());
     }).catchError((error) {
@@ -94,6 +101,8 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
     });
   }
+
+
 
   List<BannerModel> banner = [];
 
@@ -139,8 +148,10 @@ class AppCubit extends Cubit<AppStates> {
 
   String profileImageUrl = '';
 
-  void uploadeProfileImage() {
-    firebase_storage.FirebaseStorage.instance
+  Future<void> uploadeProfileImage() async{
+    profileImageUrl = '';
+    emit(UploadProfileImageLoadingState());
+   await firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profileImage.path).pathSegments.last}')
         .putFile(profileImage)
@@ -171,7 +182,7 @@ class AppCubit extends Cubit<AppStates> {
         pass:userdata.pass,
         address: address,
         uId: userdata.uId,
-        image: profileImageUrl??userdata.image,
+        image: profileImageUrl !=''?profileImageUrl:userdata.image,
         phone: phone,
       );
       FirebaseFirestore.instance
@@ -179,11 +190,41 @@ class AppCubit extends Cubit<AppStates> {
           .doc(userdata.uId)
           .update(model.toMap())
           .then((value) {
-        getUserData(uId);
+            getUserData(uId);
         emit(UpdateUserSucessState());
       }).catchError((err) {
         print(err);
         emit(UpdateUserErrorState());
       });
   }
+
+   changeFav(productId,index) {
+    if(fav[index]==false) {
+      fav[index]=!fav[index];
+      addToFav(productId,index);
+    }else {
+      fav[index]=!fav[index];
+      removeFromFav(productId,index);
+    }
+    emit(ChangeFavState());
+  }
+  void addToFav(productId,index){
+    FirebaseFirestore.instance.collection('product').doc(productId).update({
+      'fav': FieldValue.arrayUnion([userdata.uId]),
+    }).then((value) {
+      emit(AddToFavouriteSucessState());
+    }).catchError((err){
+      emit(AddToFavouriteErrorState());
+    });
+  }
+  void removeFromFav(productId,index){
+    FirebaseFirestore.instance.collection('product').doc(productId).update({
+      'fav': FieldValue.arrayRemove([userdata.uId]),
+    }).then((value) {
+      emit(RemoveFavouriteSucessState());
+    }).catchError((err){
+      emit(RemoveFavouriteErrorState());
+    });
+  }
+
 }

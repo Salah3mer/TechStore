@@ -2,6 +2,7 @@ import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/screens/login_screen/login_screen.dart';
+import 'package:tech/screens/settings_screen/setting_screen.dart';
 import 'package:tech/shared/cash_helper.dart';
 import 'package:tech/shared/components/components.dart';
 import 'package:tech/shared/components/const.dart';
@@ -15,30 +16,33 @@ class UpdateProfile extends StatelessWidget {
   var phone = TextEditingController();
   var pass = TextEditingController();
   var address = TextEditingController();
-  var formkey=GlobalKey<FormState>();
+  var formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit,AppStates>(
-      listener: (context,state){},
-      builder: (context,state){
-        var  c=AppCubit.get(context);
-        name.text=c.userdata.name;
-        phone.text=c.userdata.phone;
-        email.text=c.userdata.email;
-        address.text=c.userdata.address;
-        pass.text=c.userdata.pass;
+    return BlocConsumer<AppCubit, AppStates>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        var c = AppCubit.get(context);
+        name.text = c.userdata.name;
+        phone.text = c.userdata.phone;
+        email.text = c.userdata.email;
+        address.text = c.userdata.address;
+        pass.text = c.userdata.pass;
         return Scaffold(
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.white,
-            title: Text('Edit Profile ',style: TextStyle(color: Colors.black),),
+            title: const Text(
+              'Edit Profile ',
+              style: TextStyle(color: Colors.black),
+            ),
             leading: IconButton(
               color: Colors.black,
               iconSize: 30,
-              icon: Icon(IconBroken.Arrow___Left_Circle),
-              onPressed: (){
-              Navigator.pop(context);
+              icon: const Icon(IconBroken.Arrow___Left_Circle),
+              onPressed: () {
+                navegatBack(context, SettingScreen());
               },
             ),
           ),
@@ -58,18 +62,18 @@ class UpdateProfile extends StatelessWidget {
                           CircleAvatar(
                             radius: 64.0,
                             backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
+                                Theme.of(context).scaffoldBackgroundColor,
                             child: CircleAvatar(
                               radius: 60.0,
-                              backgroundImage: c.profileImage  !=null
+                              backgroundImage: c.profileImage != null
                                   ? FileImage(c.profileImage)
                                   : NetworkImage(
-                                '${c.userdata.image}',
-                              ),
+                                      c.userdata.image,
+                                    ),
                             ),
                           ),
                           IconButton(
-                            icon: CircleAvatar(
+                            icon: const CircleAvatar(
                               radius: 20.0,
                               child: Icon(
                                 IconBroken.Camera,
@@ -80,12 +84,13 @@ class UpdateProfile extends StatelessWidget {
                               c.getProfileImage().then((value) {
                                 c.uploadeProfileImage();
                               });
+
                             },
                           ),
                         ],
                       ),
-                      ),
                     ),
+                  ),
                   Expanded(
                       flex: 3,
                       child: Container(
@@ -101,8 +106,8 @@ class UpdateProfile extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               myFormField(
-                                  onTap: (){
-                                    name.text='';
+                                  onTap: () {
+                                    name.text = '';
                                   },
                                   nonFocseBorder: true,
                                   controller: name,
@@ -115,8 +120,8 @@ class UpdateProfile extends StatelessWidget {
                                     }
                                   }),
                               myFormField(
-                                  onTap: (){
-                                    email.text='';
+                                  onTap: () {
+                                    email.text = '';
                                   },
                                   nonFocseBorder: true,
                                   controller: email,
@@ -133,8 +138,8 @@ class UpdateProfile extends StatelessWidget {
                                       return 'Enter a valid email address';
                                   }),
                               myFormField(
-                                onTap: (){
-                                  phone.text='';
+                                onTap: () {
+                                  phone.text = '';
                                 },
                                 nonFocseBorder: true,
                                 controller: phone,
@@ -149,29 +154,35 @@ class UpdateProfile extends StatelessWidget {
                                 },
                               ),
                               myFormField(
-                                onTap: (){
-                                  address.text='';
+                                onTap: () {
+                                  address.text = '';
                                 },
-                                  nonFocseBorder: true,
-                                  controller: address,
-                                  hint: '${c.userdata.address}',
-                                  type: TextInputType.name,
-                                  prefix: IconBroken.Location,
+                                nonFocseBorder: true,
+                                controller: address,
+                                hint: '${c.userdata.address}',
+                                type: TextInputType.name,
+                                prefix: IconBroken.Location,
                               ),
                               const SizedBox(
                                 height: 5,
                               ),
+                              ConditionalBuilder(
+                                condition: state is! UpdateUserSucessState&&state is ! UploadProfileImageLoadingState,
+                                builder: (context) => defaultButton(
+                                    text: 'Update',
+                                    function: () {
+                                      if (formkey.currentState.validate()) {
+                                          c.updateUser(
+                                              phone: phone.text,
+                                              address: address.text,
+                                              email: email.text,
+                                              name: name.text);
 
-                            ConditionalBuilder(
-                              condition: state is !UpdateUserSucessState,
-                              builder: (context) => defaultButton(
-                                  text: 'Update',
-                                  function: () {
-                             c.updateUser(phone: phone.text, address: address.text, email: email.text, name: name.text);
-                                  }),
-                              fallback: (context) => const Center(
-                                  child: CircularProgressIndicator()),
-                            ),
+                                      }
+                                    }),
+                                fallback: (context) => const Center(
+                                    child: CircularProgressIndicator()),
+                              ),
                             ],
                           ),
                         ),
@@ -185,4 +196,3 @@ class UpdateProfile extends StatelessWidget {
     );
   }
 }
-

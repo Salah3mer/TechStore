@@ -55,7 +55,7 @@ class SingleCategoryScreen extends StatelessWidget {
                               c.currentProductIndex=index;
                               navegatTo(context, ProductScreen());
                             },
-                              child: homeGrid(c.catproduct[index])),
+                              child: homeGrid(c.catproduct[index],context,index)),
                     ),
                     crossAxisSpacing: 5,
                     mainAxisSpacing: 5,

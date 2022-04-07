@@ -98,12 +98,19 @@ class ProductScreen extends StatelessWidget {
                                         ),
                                       ),
                                       IconButton(
-                                        onPressed: () {},
-                                        icon: const Icon(
-                                          IconBroken.Heart,
-                                          color: Colors.red,
-                                          size: 30,
-                                        ),
+                                        iconSize: 40,
+                                        onPressed: () {
+                                          c.changeFav(c.product[c.currentProductIndex].id, c.currentProductIndex);
+                                        },
+                                        icon: c.fav[c.currentProductIndex]==false? Icon(
+                                            IconBroken.Heart
+                                        ):Container(
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                              color: Colors.red,
+                                              borderRadius: BorderRadius.circular(20),
+                                            ),
+                                            child: Icon(IconBroken.Heart,color: Colors.white,))
                                       ),
                                     ],
                                   ),

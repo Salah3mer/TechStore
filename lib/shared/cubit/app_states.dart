@@ -19,6 +19,12 @@ class GetBannerSuccessState extends AppStates{}
 class GetBannerErrorState extends AppStates{}
 class PickProfileImageSuccessState extends AppStates{}
 class UploadProfileImageSuccessState extends AppStates{}
+class UploadProfileImageLoadingState extends AppStates{}
 class UploadProfileImageErrorState extends AppStates{}
 class UpdateUserErrorState extends AppStates{}
 class UpdateUserSucessState extends AppStates{}
+class AddToFavouriteSucessState extends AppStates{}
+class ChangeFavState extends AppStates{}
+class AddToFavouriteErrorState extends AppStates{}
+class RemoveFavouriteSucessState extends AppStates{}
+class RemoveFavouriteErrorState extends AppStates{}
