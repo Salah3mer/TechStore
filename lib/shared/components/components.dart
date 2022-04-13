@@ -85,7 +85,7 @@ Widget myFormField({@required TextEditingController controller,
       ),
     );
 
-Widget defaultButton({String text, Function function}) =>
+Widget defaultButton( {String text, Function function}) =>
     Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: Container(

@@ -28,3 +28,10 @@ class ChangeFavState extends AppStates{}
 class AddToFavouriteErrorState extends AppStates{}
 class RemoveFavouriteSucessState extends AppStates{}
 class RemoveFavouriteErrorState extends AppStates{}
+class AddToCartSucessState extends AppStates{}
+class RemoveFromCartSucessState extends AppStates{}
+class Plus extends AppStates{}
+class Subtract extends AppStates{}
+class OrderSucessState extends AppStates{}
+class GetOrderSucessState extends AppStates{}
+class OrderErrorState extends AppStates{}

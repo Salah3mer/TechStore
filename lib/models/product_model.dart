@@ -6,6 +6,7 @@ class ProductModel {
   String catId;
   String desc;
   bool isFavorite;
+  int quantity;
 
   ProductModel(
     this.id,
@@ -15,6 +16,7 @@ class ProductModel {
     this.catId,
     this.desc,
     this.isFavorite,
+    this.quantity,
   );
 
   ProductModel.fromJson(Map<String, dynamic> json) {
@@ -25,5 +27,15 @@ class ProductModel {
     catId = json['cat id'];
     desc = json['desc'];
     isFavorite = json['isFavorite'];
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'image': urlImage,
+      'price': price,
+      'quantity': quantity,
+    };
   }
 }

@@ -176,7 +176,9 @@ class ProductScreen extends StatelessWidget {
                               ),
                               child: MaterialButton(
                                 clipBehavior: Clip.antiAlias,
-                                onPressed: () {},
+                                onPressed: () {
+                                  c.addToCart(c.product[c.currentProductIndex]);
+                                },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children:const [

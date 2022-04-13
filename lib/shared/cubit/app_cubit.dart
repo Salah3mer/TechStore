@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +26,7 @@ class AppCubit extends Cubit<AppStates> {
 
   UserModel userdata;
 
-  Stream getUserData(String uId) {
+  void getUserData(String uId) {
     FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
       userdata = UserModel.fromJson(value.data());
       emit(GetUserSuccessState());
@@ -79,21 +78,19 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   List<ProductModel> product = [];
-  List<ProductModel>favProduct=[];
-  List <bool>fav=[];
-   getproduct({
-    String token,
-  }) {
+  List<ProductModel> favProduct = [];
+  List<bool> fav = [];
+
+  getProduct({String token}) {
     emit(GetProductLoadingState());
     FirebaseFirestore.instance.collection('product').get().then((value) {
       value.docs.forEach((element) {
-        print(element['fav'].toString());
-          product.add(ProductModel.fromJson(element.data()));
-         if (element['fav'].toString().contains(userdata.uId)) {
-           fav.add(true);
-         } else {
-           fav.add(false);
-         }
+        product.add(ProductModel.fromJson(element.data()));
+        if (element['fav'].toString().contains(userdata.uId)) {
+          fav.add(true);
+        } else {
+          fav.add(false);
+        }
       });
       emit(GetProductSuccessState());
     }).catchError((error) {
@@ -101,8 +98,6 @@ class AppCubit extends Cubit<AppStates> {
       print(error.toString());
     });
   }
-
-
 
   List<BannerModel> banner = [];
 
@@ -148,10 +143,10 @@ class AppCubit extends Cubit<AppStates> {
 
   String profileImageUrl = '';
 
-  Future<void> uploadeProfileImage() async{
+  Future<void> uploadeProfileImage() async {
     profileImageUrl = '';
     emit(UploadProfileImageLoadingState());
-   await firebase_storage.FirebaseStorage.instance
+    await firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.file(profileImage.path).pathSegments.last}')
         .putFile(profileImage)
@@ -175,56 +170,126 @@ class AppCubit extends Cubit<AppStates> {
     @required String address,
     @required String email,
     @required String name,
-  })  {
-      UserModel model = UserModel(
-        name: name,
-        email: email,
-        pass:userdata.pass,
-        address: address,
-        uId: userdata.uId,
-        image: profileImageUrl !=''?profileImageUrl:userdata.image,
-        phone: phone,
-      );
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(userdata.uId)
-          .update(model.toMap())
-          .then((value) {
-            getUserData(uId);
-        emit(UpdateUserSucessState());
-      }).catchError((err) {
-        print(err);
-        emit(UpdateUserErrorState());
-      });
+  }) {
+    UserModel model = UserModel(
+      name: name,
+      email: email,
+      pass: userdata.pass,
+      address: address,
+      uId: userdata.uId,
+      image: profileImageUrl != '' ? profileImageUrl : userdata.image,
+      phone: phone,
+    );
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(userdata.uId)
+        .update(model.toMap())
+        .then((value) {
+      getUserData(uId);
+      emit(UpdateUserSucessState());
+    }).catchError((err) {
+      print(err);
+      emit(UpdateUserErrorState());
+    });
   }
 
-   changeFav(productId,index) {
-    if(fav[index]==false) {
-      fav[index]=!fav[index];
-      addToFav(productId,index);
-    }else {
-      fav[index]=!fav[index];
-      removeFromFav(productId,index);
+  void changeFav(productId, index) {
+    if (fav[index] == false) {
+      fav[index] = !fav[index];
+      addToFav(productId, index);
+    } else {
+      fav[index] = !fav[index];
+      removeFromFav(productId, index);
     }
     emit(ChangeFavState());
   }
-  void addToFav(productId,index){
+
+  void addToFav(productId, index) {
     FirebaseFirestore.instance.collection('product').doc(productId).update({
       'fav': FieldValue.arrayUnion([userdata.uId]),
     }).then((value) {
       emit(AddToFavouriteSucessState());
-    }).catchError((err){
+    }).catchError((err) {
       emit(AddToFavouriteErrorState());
     });
   }
-  void removeFromFav(productId,index){
+
+  void removeFromFav(productId, index) {
     FirebaseFirestore.instance.collection('product').doc(productId).update({
       'fav': FieldValue.arrayRemove([userdata.uId]),
     }).then((value) {
       emit(RemoveFavouriteSucessState());
-    }).catchError((err){
+    }).catchError((err) {
       emit(RemoveFavouriteErrorState());
     });
   }
 
+  List<ProductModel> cartItem = [];
+  var SubPrice = 0;
+  var Price = 0;
+
+  subPrice(ProductModel p) {
+    return SubPrice = p.quantity * p.price;
+  }
+
+  totalPrice(p) {
+    Price = 0;
+    for (var product in p) {
+      Price += product.quantity * product.price;
+    }
+    return Price;
+  }
+
+  void add(ProductModel p) {
+    p.quantity++;
+    emit(Plus());
+  }
+
+  void subtract(ProductModel p) {
+    if (p.quantity < 2) {
+      RemoveFromCart(p);
+    } else {
+      p.quantity--;
+    }
+    emit(Subtract());
+  }
+
+  void addToCart(ProductModel p) {
+    p.quantity = 1;
+    bool inCart = cartItem.contains(p);
+    if (inCart) {
+      print('added before');
+    } else {
+      cartItem.add(p);
+    }
+    emit(AddToCartSucessState());
+  }
+
+  void RemoveFromCart(ProductModel p) {
+    cartItem.remove(p);
+    emit(RemoveFromCartSucessState());
+  }
+  void order(String totalPrice, String address, List<ProductModel> product) {
+    FirebaseFirestore.instance.collection('order').doc(userdata.uId).set({
+      'totalPrice': totalPrice,
+      'address': address,
+    });
+    for (var p in product)
+      FirebaseFirestore.instance
+          .collection('order')
+          .doc(userdata.uId)
+          .collection('OrderDetails')
+          .doc()
+          .set({
+        'id': p.id,
+        'name': p.name,
+        'image': p.urlImage,
+        'price': p.price,
+        'quantity': p.quantity,
+      }).then((value) {
+        emit(OrderSucessState());
+      }).catchError((err){
+        emit(OrderErrorState());
+      });
+  }
 }

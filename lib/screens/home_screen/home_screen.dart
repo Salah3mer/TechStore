@@ -1,11 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:conditional_builder/conditional_builder.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tech/models/category_model.dart';
+import 'package:tech/screens/cart_screen/cart_screen.dart';
 import 'package:tech/screens/product_screen/product_screen.dart';
 import 'package:tech/screens/search_screen/search_screen.dart';
 import 'package:tech/screens/single_category_screen/single_category_screen.dart';
@@ -80,9 +80,27 @@ class HomeScreen extends StatelessWidget {
                             child: Row(
                               children: [
                                 CircleAvatar(
-                                  backgroundImage: NetworkImage(
-                                      c.userdata.image),
-                                  radius: 30,
+                                  backgroundColor: Colors.indigo,
+                                  radius: 28.3,
+                                  child: Container(
+                                    width:double.infinity,
+                                    height: 54,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40)
+                                    ),
+                                    child: CachedNetworkImage(
+                                      imageUrl: c.userdata.image,
+                                      fit: BoxFit.cover,
+                                      placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+                                      errorWidget: (context, url, error) => Icon(Icons.error),
+                                      width: 42,
+                                      height: 42,
+                                      imageBuilder:(context, imageProvider)=> CircleAvatar(
+                                        backgroundImage: imageProvider,
+                                      ),
+                                    ),
+                                  ),
+
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -104,7 +122,9 @@ class HomeScreen extends StatelessWidget {
                                           ),
                                         ]),
                                     child: IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          navegatTo(context, CartScreen());
+                                        },
                                         icon: const Icon(
                                           IconBroken.Buy,
                                           size: 30,

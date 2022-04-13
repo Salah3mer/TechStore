@@ -5,6 +5,7 @@ import 'package:tech/screens/login_screen/login_screen.dart';
 import 'package:tech/shared/components/components.dart';
 import 'package:tech/shared/components/const.dart';
 class SplashScreen extends StatefulWidget {
+
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
